@@ -1,8 +1,7 @@
-from fastapi import APIRouter, FastAPI
+from fastapi import FastAPI
 
+from app.api.routes import ble_router
 from app.config import SECRET_KEY, ORIGINS
-from .api.edgex_routes import edgex_router
-from .api.cloud_routes import cloud_router
 
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
@@ -21,7 +20,4 @@ app.add_middleware(
 )
 
 # Routes
-main_router = APIRouter(prefix="/gateway-api")
-main_router.include_router(cloud_router)
-main_router.include_router(edgex_router)
-app.include_router(main_router)
+app.include_router(ble_router)
