@@ -1,3 +1,0 @@
-[submodule "app/ble_wifi_provisioner"]
-	path = app/ble_wifi_provisioner
-	url = git@github.com:lomolisso/ble_wifi_provisioner.git
