@@ -11,12 +11,6 @@ from typing import List
 ble_router = APIRouter(prefix="/ble-prov-api")
 
 
-@ble_router.get("/get-wlan-iface-address")
-async def get_wlan_iface_address() -> schemas.WlanIfaceAddress:
-    device_address = api_utils.get_wlan_iface_address()
-    return schemas.WlanIfaceAddress(device_address=device_address)
-
-
 @ble_router.get("/discover")
 async def discover_devices(
     provisioner=Depends(get_ble_provisioner),
@@ -30,14 +24,15 @@ async def discover_devices(
     ]
 
 
-@ble_router.post("/prov-device")
+@ble_router.post("/provision")
 async def provision_device(
     devices: list[schemas.BLEDeviceWithPoP], provisioner=Depends(get_ble_provisioner)
-) -> schemas.BLEProvResponse:
-    not_prov_devices, prov_devices = await api_utils.provision_ble_devices(
+) -> list[schemas.BLEDevice]:
+    _, prov_devices = await api_utils.provision_ble_devices(
         devices, provisioner
     )
 
-    return schemas.BLEProvResponse(
-        provisioned=prov_devices, not_provisioned=not_prov_devices
-    )
+    return [
+        schemas.BLEDevice(**d)
+        for d in prov_devices
+    ]

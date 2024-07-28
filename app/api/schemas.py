@@ -14,7 +14,3 @@ class BLEDevice(BaseModel):
 
 class BLEDeviceWithPoP(BLEDevice):
     device_pop: str
-
-class BLEProvResponse(BaseModel):
-    provisioned: list[str]
-    not_provisioned: list[str]

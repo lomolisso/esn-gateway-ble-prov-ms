@@ -1,12 +1,4 @@
-import netifaces
-from app.config import EDGE_GATEWAY_WLAN_IFACE, BLE_PROV_MAX_RETRIES
-
-def get_wlan_iface_address():
-    try:
-        mac = netifaces.ifaddresses(EDGE_GATEWAY_WLAN_IFACE)[netifaces.AF_LINK][0]["addr"]
-        return mac.upper()
-    except (KeyError, IndexError):
-        return None 
+from app.config import BLE_PROV_MAX_RETRIES
 
 async def provision_ble_devices(devices, provisioner):
     _not_prov_devices = []
@@ -20,7 +12,7 @@ async def provision_ble_devices(devices, provisioner):
             try:
                 # Attempt to provision the device
                 await provisioner.prov_device()
-                _prov_devices.append(device.device_name)
+                _prov_devices.append(device)
                 _provisioned = True
                 break  # Break the loop if provisioning is successful
             except:
@@ -29,7 +21,7 @@ async def provision_ble_devices(devices, provisioner):
 
         # Check if the device was not provisioned after all retries
         if not _provisioned:
-            _not_prov_devices.append(device.device_name)
+            _not_prov_devices.append(device)
 
         # Disconnect the provisioner after the provisioning attempts
         await provisioner.disconnect()
