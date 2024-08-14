@@ -8,4 +8,4 @@ RUN pip install -r /tmp/requirements.txt
 # run backend app
 WORKDIR /app
 EXPOSE $BLE_PROV_MICROSERVICE_PORT
-CMD uvicorn app.main:app --host 0.0.0.0 --port $BLE_PROV_MICROSERVICE_PORT --reload
+CMD uvicorn app.main:app --host 0.0.0.0 --port $BLE_PROV_MICROSERVICE_PORT
