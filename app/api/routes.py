@@ -8,8 +8,7 @@ from app.config import (
 )
 from typing import List
 
-ble_router = APIRouter(prefix="/ble-prov-api")
-
+ble_router = APIRouter(prefix="/api/v1")
 
 @ble_router.get("/discover")
 async def discover_devices(
@@ -33,6 +32,6 @@ async def provision_device(
     )
 
     return [
-        schemas.BLEDevice(**d)
+        schemas.BLEDevice(**d.model_dump())
         for d in prov_devices
     ]
